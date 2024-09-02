@@ -1,5 +1,6 @@
 package com.programmingtechie.Inventory_Service.controller;
 
+import com.programmingtechie.Inventory_Service.dto.InventoryResponse;
 import com.programmingtechie.Inventory_Service.model.Inventory;
 import com.programmingtechie.Inventory_Service.service.InventoryService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,7 +24,7 @@ public class InventoryController {
     // http://localhost:8082/api/inventory?skuCode=iphone-13&skuCode=iphone13-red
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Optional<Inventory> isInStock(@PathVariable("sku-code") String skuCode) {
+    public List<InventoryResponse> isInStock(@RequestParam List<String> skuCode) {
         log.info("Received inventory check request for skuCode: {}", skuCode);
         return inventoryService.isInStock(skuCode);
     }
