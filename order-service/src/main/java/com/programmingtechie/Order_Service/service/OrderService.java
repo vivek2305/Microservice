@@ -1,6 +1,5 @@
 package com.programmingtechie.Order_Service.service;
 
-import com.programmingtechie.Order_Service.config.WebClientConfig;
 import com.programmingtechie.Order_Service.dto.InventoryResponse;
 import com.programmingtechie.Order_Service.dto.OrderLineItemsDto;
 import com.programmingtechie.Order_Service.dto.OrderRequest;
@@ -22,7 +21,7 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     public void placeOrder(OrderRequest orderRequest){
         Order order= new Order();
@@ -37,8 +36,8 @@ public class OrderService {
                 .map(com.programmingtechie.Order_Service.model.OrderLineItems::getSkuCode)
                 .toList();
         //Call to Inventory
-        InventoryResponse[] inventoryResponseArray = webClient.get()
-                .uri("http://localhost:8082/api/inventory"
+        InventoryResponse[] inventoryResponseArray = webClientBuilder.build().get()
+                .uri("http://Inventory-Service/api/inventory"
                 ,uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)
